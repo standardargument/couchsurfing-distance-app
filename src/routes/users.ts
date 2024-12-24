@@ -22,7 +22,7 @@ router.get("/:id", async (ctx) => {
 });
 
 router.post("/", async (ctx) => {
-  const res = addUser(ctx.request.body);
+  const res = await addUser(ctx.request.body);
   ctx.body = { data: res };
   ctx.status = 200;
 });
