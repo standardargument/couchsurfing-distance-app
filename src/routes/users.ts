@@ -1,11 +1,12 @@
 import Router from "@koa/router";
-import { getDistanceBetweenUsers } from "../models/users";
+import { getUsers, getDistanceBetweenUsers } from "../models/users";
 
 const router = new Router();
 
 router.get("/", async (ctx) => {
   console.info("get not implemented");
-  ctx.body = { data: [] };
+  const users = await getUsers();
+  ctx.body = { data: users };
   ctx.status = 200;
 });
 

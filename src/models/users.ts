@@ -1,8 +1,29 @@
 import { filter, find, flatten, includes, map, pipe, propEq } from "ramda";
 
 import Connection from "../types/Connection";
+import User from "../types/User";
 import type DistanceParams from "../types/DistanceParams";
 import getKnexInstance from "../config/knex";
+
+export async function getUsers(): Promise<User[]> {
+  console.info("Fetching users from db");
+
+  try {
+    const knex = getKnexInstance();
+
+    const users = await knex<User>("users AS u").select(
+      "u.id",
+      "u.firstName",
+      "u.lastName",
+      "u.email",
+    );
+
+    return users as User[];
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    throw err;
+  }
+}
 
 export async function getDistanceBetweenUsers(
   user: number,
