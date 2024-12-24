@@ -25,6 +25,24 @@ export async function getUsers(): Promise<User[]> {
   }
 }
 
+export async function getUserById(id: number): Promise<User> {
+  console.info(`Fetching user from db: ${id}`);
+
+  try {
+    const knex = getKnexInstance();
+
+    const users = await knex<User>("users AS u")
+      .select("u.id", "u.firstName", "u.lastName", "u.email")
+      .where("u.id", id)
+      .first();
+
+    return users as User;
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    throw err;
+  }
+}
+
 export async function getDistanceBetweenUsers(
   user: number,
   target: number,
