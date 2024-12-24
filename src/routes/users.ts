@@ -1,4 +1,5 @@
 import Router from "@koa/router";
+import { getDistanceBetweenUsers } from "../models/users";
 
 const router = new Router();
 
@@ -36,7 +37,9 @@ router.patch("/:id", async (ctx) => {
 });
 
 router.post("/distance", async (ctx) => {
-  ctx.body = { data: {} };
+  const { user, target } = ctx.request.body;
+  const distance = await getDistanceBetweenUsers(user, target);
+  ctx.body = { data: { user, target, distance } };
   ctx.status = 200;
 });
 
