@@ -42,6 +42,6 @@
 
     docker build -t couchsurfing-distace-app .
 
-### Runnging the container
+### Running the container
 
     docker run -p 3000:3000 --name cda couchsurfing-distance-app
