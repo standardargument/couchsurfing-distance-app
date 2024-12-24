@@ -1,5 +1,6 @@
 import Router from "@koa/router";
 import {
+  addUser,
   getUsers,
   getUserById,
   getDistanceBetweenUsers,
@@ -8,14 +9,12 @@ import {
 const router = new Router();
 
 router.get("/", async (ctx) => {
-  console.info("get not implemented");
   const users = await getUsers();
   ctx.body = { data: users };
   ctx.status = 200;
 });
 
 router.get("/:id", async (ctx) => {
-  console.info("get by id not implemented");
   const { id } = ctx.params;
   const user = await getUserById(parseInt(id));
   ctx.body = { data: user };
@@ -23,8 +22,8 @@ router.get("/:id", async (ctx) => {
 });
 
 router.post("/", async (ctx) => {
-  console.info("create not implemented");
-  ctx.body = { data: {} };
+  const res = addUser(ctx.request.body);
+  ctx.body = { data: res };
   ctx.status = 200;
 });
 

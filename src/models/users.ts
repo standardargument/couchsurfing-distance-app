@@ -43,6 +43,21 @@ export async function getUserById(id: number): Promise<User> {
   }
 }
 
+export async function addUser(user: User): Promise<number[]> {
+  console.info(`create user`);
+
+  try {
+    const knex = getKnexInstance();
+
+    const response = await knex<User>("users AS u").insert({ ...user });
+
+    return response as number[];
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    throw err;
+  }
+}
+
 export async function getDistanceBetweenUsers(
   user: number,
   target: number,
