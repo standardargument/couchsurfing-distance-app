@@ -26,13 +26,13 @@
     - Generate mock data and store in repo
     - Load mock data to db tables
 
-3. CRUD: Users
+3. Distance Function
     - unit tests
     - logging
     - error handling
     - implementation
 
-4. Distance Function
+4. CRUD: Users
     - unit tests
     - logging
     - error handling
