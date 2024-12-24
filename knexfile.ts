@@ -8,6 +8,7 @@ const config: { [key: string]: Knex.Config } = {
     connection: {
       filename: "./data/couchsurfing.sqlite3",
     },
+    useNullAsDefault: true,
   },
 
   staging: {
@@ -15,6 +16,7 @@ const config: { [key: string]: Knex.Config } = {
     connection: {
       filename: "./data/couchsurfing.sqlite3",
     },
+    useNullAsDefault: true,
   },
 
   production: {
@@ -22,6 +24,7 @@ const config: { [key: string]: Knex.Config } = {
     connection: {
       filename: "./data/couchsurfing.sqlite3",
     },
+    useNullAsDefault: true,
   },
 };
 

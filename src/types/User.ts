@@ -4,3 +4,5 @@ interface User {
   lastName: string;
   email: string;
 }
+
+export default User;

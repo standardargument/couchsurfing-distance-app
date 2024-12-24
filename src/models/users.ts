@@ -1,11 +1,77 @@
+import { filter, find, flatten, includes, map, pipe, propEq } from "ramda";
+
+import Connection from "../types/Connection";
+import type DistanceParams from "../types/DistanceParams";
+import getKnexInstance from "../config/knex";
+
 export async function getDistanceBetweenUsers(
   user: number,
   target: number,
 ): Promise<number> {
   try {
-    return -1;
+    const knex = getKnexInstance();
+
+    const tries = process.env.MAX_TRIES ?? "5";
+    const MAX_TRIES = parseInt(tries);
+
+    console.info(`Calculating distance between users: ${user}, ${target}`);
+    console.info("MAX_TRIES", MAX_TRIES);
+
+    let count = 1;
+    let distance = await findDistance({
+      knex,
+      list: [user],
+      target: target,
+      count,
+      max: MAX_TRIES,
+    });
+
+    return distance ?? -1;
   } catch (err) {
-    console.error("Error calculating distance:", err);
+    console.error("Error fetching users:", err);
     throw err;
   }
+}
+
+export async function findDistance(params: DistanceParams) {
+  const { knex, list, target, count, max } = params;
+
+  if (count >= max) {
+    return count;
+  }
+
+  let connections = await knex<Connection>("connections AS c")
+    .select("c.id", "c.x", "c.y")
+    .whereIn("c.x", list)
+    .or.whereIn("c.y", list);
+
+  console.debug(connections);
+  const foundX = find(propEq(target, "x"))(connections);
+
+  if (foundX) {
+    return count;
+  }
+
+  const foundY = find(propEq(target, "y"))(connections);
+
+  if (foundY) {
+    return count;
+  }
+
+  const flattened = pipe(
+    map((x: Connection) => {
+      return [x.x, x.y];
+    }),
+    flatten,
+  )(connections);
+
+  const filtered = filter((x) => !includes(x, list), flattened);
+
+  return await findDistance({
+    knex,
+    list: filtered,
+    target: target,
+    count: count + 1,
+    max,
+  });
 }

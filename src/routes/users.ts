@@ -38,6 +38,17 @@ router.patch("/:id", async (ctx) => {
 
 router.post("/distance", async (ctx) => {
   const { user, target } = ctx.request.body;
+
+  if (user === undefined || target === undefined) {
+    ctx.body = { user: "required", target: "required" };
+    return (ctx.status = 400);
+  }
+
+  if (!(typeof user === "number") || !(typeof target === "number")) {
+    ctx.body = { user: "required", target: "required" };
+    return (ctx.status = 400);
+  }
+
   const distance = await getDistanceBetweenUsers(user, target);
   ctx.body = { data: { user, target, distance } };
   ctx.status = 200;

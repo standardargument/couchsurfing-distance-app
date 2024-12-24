@@ -9,6 +9,7 @@ interface KnexConfig {
   connection: {
     filename: string;
   };
+  useNullAsDefault: boolean;
 }
 
 // Knex configuration
